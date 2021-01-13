@@ -4,10 +4,10 @@ on:
     paths:
     - 'pkg/codegen/**'
     - '!pkg/codegen/docs/**'
-    - '.github/workflows/codegen-test.yml'
+    - '.github/workflows/run-codegen-test.yml'
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.PULUMI_BOT_TOKEN }}
 
 jobs:
   downstream-test:
@@ -48,5 +48,44 @@ jobs:
           downstream-name: pulumi-${{ matrix.provider }}
           downstream-url: https://github.com/pulumi/pulumi-${{ matrix.provider }}
           pulumi-bot-token: ${{ secrets.PULUMI_BOT_TOKEN }}
-          github-actions-token: ${{ secrets.GITHUB_TOKEN }}
+          github-actions-token: ${{ secrets.PULUMI_BOT_TOKEN }}
           use-provider-dir: true
+
+  downstream-azure-netgen:
+    name: Test Azure Nextgen Downstream
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.15.x
+      - name: Install Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+      - name: Install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9.x
+      - name: Install Pulumi CLI
+        uses: pulumi/action-install-pulumi-cli@v1.0.1
+      - name: Install pulumictl
+        uses: jaxxstorm/action-install-gh-release@v1.1.0
+        with:
+          repo: pulumi/pulumictl
+
+      - name: Check out source code
+        uses: actions/checkout@master
+      - name: Test Downstream
+        uses: pulumi/action-test-provider-downstream@test-private-repos
+        env:
+          GOPROXY: "https://proxy.golang.org"
+        with:
+          replacements: github.com/pulumi/pulumi/pkg/v2=pulumi/pkg,github.com/pulumi/pulumi/sdk/v2=pulumi/sdk
+          downstream-name: pulumi-azure-nextgen-provider
+          downstream-url: pulumi/pulumi-azure-nextgen-provider
+          pulumi-bot-token: ${{ secrets.PULUMI_BOT_TOKEN }}
+          github-actions-token: ${{ secrets.PULUMI_BOT_TOKEN }}
+          use-provider-dir: true
+          is-private-repo: true
