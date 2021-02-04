@@ -271,6 +271,7 @@ func newImportCmd() *cobra.Command {
 	var skipPreview bool
 	var suppressOutputs bool
 	var suppressPermaLink bool
+	var printSelfManagedBackendPermalink bool
 	var yes bool
 	var protectResources bool
 
@@ -391,6 +392,16 @@ func newImportCmd() *cobra.Command {
 				Type:              displayType,
 				EventLogPath:      eventLogPath,
 				Debug:             debug,
+			}
+
+			filestateBackend, err := isFilestateBackend(opts.Display)
+			if err != nil {
+				return result.FromError(err)
+			}
+			// by default, we are going to suppress the permalink when using non-SaaS backends
+			// this can be re-enabled using the `print-self-managed-backend-permalink` flag
+			if filestateBackend && !printSelfManagedBackendPermalink {
+				opts.Display.SuppressPermaLink = true
 			}
 
 			// Fetch the project.
@@ -544,6 +555,9 @@ func newImportCmd() *cobra.Command {
 	cmd.PersistentFlags().BoolVar(
 		&suppressPermaLink, "suppress-permalink", false,
 		"Suppress display of the state permalink")
+	cmd.PersistentFlags().BoolVar(
+		&printSelfManagedBackendPermalink, "print-self-managed-backend-permalink", false,
+		"Print self managed backend permalinks e.g. S3, Azure blob, GCS Storage etc.")
 	cmd.PersistentFlags().BoolVarP(
 		&yes, "yes", "y", false,
 		"Automatically approve and perform the refresh after previewing it")

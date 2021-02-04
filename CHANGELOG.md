@@ -15,6 +15,13 @@ CHANGELOG
 - [sdk/python] Fix a bug in `contains_unknowns` where outputs with a property named "values" failed with a TypeError.
   [#6264](https://github.com/pulumi/pulumi/pull/6264)
 
+- [cli] Disable permalinks to the update details page when using non-SaaS backends (S3, Azure, GCS). Should the user want to get
+  permalinks when using a non-SaaS backend, they can pass a flag:
+  `pulumi up --non-saas-permalink-enabled`.
+  Permalinks for these non-SaaS backends will be suppressed on `update`, `preview`,
+  `destroy`, `import` and `refresh` operations.
+  [#6251](https://github.com/pulumi/pulumi/pull/6251)
+
 ## 2.20.0 (2021-02-03)
 
 - [sdk/python] Fix `Output.from_input` to unwrap nested output values in input types (args classes), which addresses
