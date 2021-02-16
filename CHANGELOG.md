@@ -25,6 +25,10 @@ CHANGELOG
   default. `UsePipenv` can be set to go back to the old behavior of using pipenv with tests.
   [#6318](https://github.com/pulumi/pulumi/pull/6318)
 
+- [sdk/go] Add helpers to convert raw Go maps and arrays to Pulumi Map and Array inputs.
+  [#6337](https://github.com/pulumi/pulumi/pull/6337)
+
+
 ## 2.20.0 (2021-02-03)
 
 - [sdk/python] Fix `Output.from_input` to unwrap nested output values in input types (args classes), which addresses
