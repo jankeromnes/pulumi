@@ -25,6 +25,9 @@ CHANGELOG
   default. `UsePipenv` can be set to go back to the old behavior of using pipenv with tests.
   [#6318](https://github.com/pulumi/pulumi/pull/6318)
 
+- [automation/python] Fix a bug in nested configuration parsing.
+  [#6349](https://github.com/pulumi/pulumi/pull/6349)
+
 ## 2.20.0 (2021-02-03)
 
 - [sdk/python] Fix `Output.from_input` to unwrap nested output values in input types (args classes), which addresses
