@@ -8,4 +8,6 @@ tasks:
     init: >
       make ensure &&
       make install
-    command: pulumi version
+    command: >
+      pulumi login &&
+      make
