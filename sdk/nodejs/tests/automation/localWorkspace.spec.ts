@@ -174,45 +174,45 @@ describe("LocalWorkspace", () => {
         assert.strictEqual(typeof (info), "undefined");
         await ws.removeStack(stackName);
     }));
-    it(`runs through the stack lifecycle with a local program`, asyncTest(async () => {
-        const stackName = `int_test${getTestSuffix()}`;
-        const workDir = upath.joinSafe(__dirname, "data", "testproj");
-        const stack = await LocalWorkspace.createStack({ stackName, workDir });
+    // it(`runs through the stack lifecycle with a local program`, asyncTest(async () => {
+    //     const stackName = `int_test${getTestSuffix()}`;
+    //     const workDir = upath.joinSafe(__dirname, "data", "testproj");
+    //     const stack = await LocalWorkspace.createStack({ stackName, workDir });
 
-        const config: ConfigMap = {
-            "bar": { value: "abc" },
-            "buzz": { value: "secret", secret: true },
-        };
-        await stack.setAllConfig(config);
+    //     const config: ConfigMap = {
+    //         "bar": { value: "abc" },
+    //         "buzz": { value: "secret", secret: true },
+    //     };
+    //     await stack.setAllConfig(config);
 
-        // pulumi up
-        const upRes = await stack.up();
-        assert.strictEqual(Object.keys(upRes.outputs).length, 3);
-        assert.strictEqual(upRes.outputs["exp_static"].value, "foo");
-        assert.strictEqual(upRes.outputs["exp_static"].secret, false);
-        assert.strictEqual(upRes.outputs["exp_cfg"].value, "abc");
-        assert.strictEqual(upRes.outputs["exp_cfg"].secret, false);
-        assert.strictEqual(upRes.outputs["exp_secret"].value, "secret");
-        assert.strictEqual(upRes.outputs["exp_secret"].secret, true);
-        assert.strictEqual(upRes.summary.kind, "update");
-        assert.strictEqual(upRes.summary.result, "succeeded");
+    //     // pulumi up
+    //     const upRes = await stack.up();
+    //     assert.strictEqual(Object.keys(upRes.outputs).length, 3);
+    //     assert.strictEqual(upRes.outputs["exp_static"].value, "foo");
+    //     assert.strictEqual(upRes.outputs["exp_static"].secret, false);
+    //     assert.strictEqual(upRes.outputs["exp_cfg"].value, "abc");
+    //     assert.strictEqual(upRes.outputs["exp_cfg"].secret, false);
+    //     assert.strictEqual(upRes.outputs["exp_secret"].value, "secret");
+    //     assert.strictEqual(upRes.outputs["exp_secret"].secret, true);
+    //     assert.strictEqual(upRes.summary.kind, "update");
+    //     assert.strictEqual(upRes.summary.result, "succeeded");
 
-        // pulumi preview
-        await stack.preview();
-        // TODO: update assertions when we have structured output
+    //     // pulumi preview
+    //     await stack.preview();
+    //     // TODO: update assertions when we have structured output
 
-        // pulumi refresh
-        const refRes = await stack.refresh();
-        assert.strictEqual(refRes.summary.kind, "refresh");
-        assert.strictEqual(refRes.summary.result, "succeeded");
+    //     // pulumi refresh
+    //     const refRes = await stack.refresh();
+    //     assert.strictEqual(refRes.summary.kind, "refresh");
+    //     assert.strictEqual(refRes.summary.result, "succeeded");
 
-        // pulumi destroy
-        const destroyRes = await stack.destroy();
-        assert.strictEqual(destroyRes.summary.kind, "destroy");
-        assert.strictEqual(destroyRes.summary.result, "succeeded");
+    //     // pulumi destroy
+    //     const destroyRes = await stack.destroy();
+    //     assert.strictEqual(destroyRes.summary.kind, "destroy");
+    //     assert.strictEqual(destroyRes.summary.result, "succeeded");
 
-        await stack.workspace.removeStack(stackName);
-    }));
+    //     await stack.workspace.removeStack(stackName);
+    // }));
     it(`runs through the stack lifecycle with an inline program`, asyncTest(async () => {
         const program = async () => {
             const config = new Config();
