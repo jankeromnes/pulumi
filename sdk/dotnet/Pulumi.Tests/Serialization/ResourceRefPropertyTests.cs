@@ -273,19 +273,19 @@ namespace Pulumi.Tests.Serialization
             }
         }
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public async Task DeserializeComponentResource(bool isPreview)
-        {
-            var resources = await RunAsync<DeserializeComponentResourceStack>(isPreview);
+        // [Theory]
+        // [InlineData(false)]
+        // [InlineData(true)]
+        // public async Task DeserializeComponentResource(bool isPreview)
+        // {
+        //     var resources = await RunAsync<DeserializeComponentResourceStack>(isPreview);
 
-            var stack = resources.OfType<DeserializeComponentResourceStack>().FirstOrDefault();
-            Assert.NotNull(stack);
+        //     var stack = resources.OfType<DeserializeComponentResourceStack>().FirstOrDefault();
+        //     Assert.NotNull(stack);
 
-            var values = (await stack.Values.DataTask).Value;
-            Assert.Equal(values["expectedUrn"], values["actualUrn"]);
-        }
+        //     var values = (await stack.Values.DataTask).Value;
+        //     Assert.Equal(values["expectedUrn"], values["actualUrn"]);
+        // }
 
         public class DeserializeMissingComponentResourceStack : Stack
         {
