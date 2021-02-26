@@ -116,28 +116,28 @@ describe("LocalWorkspace", () => {
 
         await ws.removeStack(stackName);
     }));
-    it(`nested_config`, asyncTest(async () => {
-        const stackName = fullyQualifiedStackName("pulumi-test", "nested_config", "dev");
-        const workDir = upath.joinSafe(__dirname, "data", "nested_config");
-        const stack = await LocalWorkspace.createOrSelectStack({ stackName, workDir });
+    // it(`nested_config`, asyncTest(async () => {
+    //     const stackName = fullyQualifiedStackName("pulumi-test", "nested_config", "dev");
+    //     const workDir = upath.joinSafe(__dirname, "data", "nested_config");
+    //     const stack = await LocalWorkspace.createOrSelectStack({ stackName, workDir });
 
-        const allConfig = await stack.getAllConfig();
-        const outerVal = allConfig["nested_config:outer"];
-        assert.strictEqual(outerVal.secret, true);
-        assert.strictEqual(outerVal.value, "{\"inner\":\"my_secret\",\"other\":\"something_else\"}");
+    //     const allConfig = await stack.getAllConfig();
+    //     const outerVal = allConfig["nested_config:outer"];
+    //     assert.strictEqual(outerVal.secret, true);
+    //     assert.strictEqual(outerVal.value, "{\"inner\":\"my_secret\",\"other\":\"something_else\"}");
 
-        const listVal = allConfig["nested_config:myList"];
-        assert.strictEqual(listVal.secret, false);
-        assert.strictEqual(listVal.value, "[\"one\",\"two\",\"three\"]");
+    //     const listVal = allConfig["nested_config:myList"];
+    //     assert.strictEqual(listVal.secret, false);
+    //     assert.strictEqual(listVal.value, "[\"one\",\"two\",\"three\"]");
 
-        const outer = await stack.getConfig("outer");
-        assert.strictEqual(outer.secret, true);
-        assert.strictEqual(outer.value, "{\"inner\":\"my_secret\",\"other\":\"something_else\"}");
+    //     const outer = await stack.getConfig("outer");
+    //     assert.strictEqual(outer.secret, true);
+    //     assert.strictEqual(outer.value, "{\"inner\":\"my_secret\",\"other\":\"something_else\"}");
 
-        const list = await stack.getConfig("myList");
-        assert.strictEqual(list.secret, false);
-        assert.strictEqual(list.value, "[\"one\",\"two\",\"three\"]");
-    }));
+    //     const list = await stack.getConfig("myList");
+    //     assert.strictEqual(list.secret, false);
+    //     assert.strictEqual(list.value, "[\"one\",\"two\",\"three\"]");
+    // }));
     it(`can list stacks and currently selected stack`, asyncTest(async () => {
         const projectSettings: ProjectSettings = {
             name: `node_list_test${getTestSuffix()}`,
